@@ -90,7 +90,7 @@ export const getList = async () => {
   const q = query(collectionRef, where('isArchived', '!=', true))
 
   const querySnapshot = await getDocs(q)
-
+console.log('[getList] querySnapshot.docs.data()',querySnapshot.docs.data())
   return querySnapshot.docs.reduce((_acc, docSnapshot) => {
     const doc = docSnapshot.data()
     const listId = doc.id;
