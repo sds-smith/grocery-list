@@ -33,8 +33,8 @@ export const addItem = async ( objectToAdd, numItems ) => {
 }
 
 export const updateList = async ( updatedList, listKey = today ) => {
-  if (!Object.prototype.hasOwnProperty.call(doc, 'isArchived')) updatedList.isArchived = false;
-  
+  if (!Object.prototype.hasOwnProperty.call(updatedList, 'isArchived')) updatedList.isArchived = false;
+
   const collectionRef = collection(db, 'lists')
   const batch = writeBatch(db)
 
