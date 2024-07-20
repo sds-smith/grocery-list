@@ -12,6 +12,7 @@ import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 export default function AddItem({items, handleUpdateList}) {
     const [ selected, setSelected ] = useState(null);
     const [ quantity, setQuantity ] = useState(1);
+    const [ notes, setNotes ] = useState("");
 
     const quantityOptions = [1,2,3,4,5,6,7,8,9]
 
@@ -25,11 +26,15 @@ export default function AddItem({items, handleUpdateList}) {
     }
 
     const handleChangeQty = (e) => {
-        setQuantity(e.target.value);
+        setQuantity(Number(e.target.value));
+    }
+
+    const handleChangeNotes = (e) => {
+        setNotes(e.target.value);
     }
 
     const handleClickAddItem = () => {
-        handleUpdateList(selected, quantity)
+        handleUpdateList(selected, quantity, notes)
     }
 
     return (
@@ -62,6 +67,15 @@ export default function AddItem({items, handleUpdateList}) {
                 <IconButton color="primary" aria-label="add to shopping cart" onClick={handleClickAddItem} disabled={!selected}>
                   <AddShoppingCartIcon />
                 </IconButton>
+            </Grid>
+            <Grid item xs={12}>
+                <TextField
+                    multiline
+                    fullWidth
+                    label="Notes (optional)"
+                    value={notes}
+                    onChange={handleChangeNotes}
+                />
             </Grid>
         </Grid>
     )

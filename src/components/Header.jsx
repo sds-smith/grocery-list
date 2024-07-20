@@ -7,7 +7,7 @@ import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import BuildIcon from '@mui/icons-material/Build';
 import HomeIcon from '@mui/icons-material/Home';
 import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
+// import MenuIcon from '@mui/icons-material/Menu';
 import Collapse from '@mui/material/Collapse';
 import AddItem from './AddItem';
 
@@ -26,7 +26,7 @@ export default function Header({items, handleUpdateList, view, toggleView}) {
       <Box sx={{ flexGrow: 1, height: '50px' }}>
         <AppBar position="fixed">
           <Toolbar>
-            <IconButton
+            {/* <IconButton
               size="large"
               edge="start"
               color="inherit"
@@ -34,7 +34,7 @@ export default function Header({items, handleUpdateList, view, toggleView}) {
               sx={{ mr: 2 }}
             >
               <MenuIcon />
-            </IconButton>
+            </IconButton> */}
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
               Grocery List
             </Typography>

@@ -2,16 +2,19 @@
 import Container from '@mui/material/Container';
 import Section from './Section';
 
-export default function List({listItems, sections}) {
-    console.log({listItems, sections})
-    const listItemsBySection = Object.entries(listItems)?.reduce((acc, [itemId, itemObj]) => ({
+export default function List({listItems, sections, handleOpenModal}) {
+    const listItemsBySection = Object.entries(listItems)?.reduce((acc, [itemId, itemObj]) => {
+    if (itemId === 'isArchived') return acc
+    return { 
         ...acc,
         [itemObj.section] : {
             ...acc[itemObj.section],
             [itemId] : itemObj
         }
-    }) || {}, {})
-console.log({listItemsBySection})
+     } || {}
+    }, {})
+    console.log({listItemsBySection})
+
     const sortHelper = (a, b) => {
         const [a_id] = a;
         const [b_id] = b;
@@ -25,6 +28,7 @@ console.log({listItemsBySection})
                     key={id}
                     title={sections[id].title}
                     listItems={listItems}
+                    handleOpenModal={handleOpenModal}
                 />
             ))}
         </Container>

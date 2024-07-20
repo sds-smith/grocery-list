@@ -5,6 +5,7 @@ import BottomAppBar from './components/BottomAppBar';
 import './App.css';
 import { getSections, getItems, getList, updateList } from './utils/firebase';
 import AdminPanel from './components/AdminPanel';
+import CustomModal from './components/CustomModal';
 
 const TOGGLE_VIEW = {
   Admin: 'List',
@@ -17,21 +18,33 @@ function App() {
   const [items, setItems] = useState(null);
   const [listItems, setListItems] = useState(null);
   const [listId, setListId] = useState(null);
+  const [openModal, setOpenModal] = useState(false);
 
   const total = !listItems ? 0 : Object.values(listItems).reduce((acc, curr) => acc + (curr?.quantity * curr?.price), 0);
 
   const toggleView = () => setView(prevView => TOGGLE_VIEW[prevView]);
 
-  const handleUpdateList = (selected, quantity) => {
+  const handleUpdateList = (selected, quantity, notes) => {
     const itemToAdd = {
       ...items[selected],
       quantity
     };
-    console.log({selected, quantity, itemToAdd})
+    if (notes) itemToAdd.notes = notes;
+
     setListItems(prevListItems => ({
       ...prevListItems,
       [selected] : itemToAdd
     }));
+  }
+
+  const handleOpenModal = (action, payload) => setOpenModal({action, payload});
+  const handleCloseModal = () => setOpenModal(false);
+
+  const archiveList = () => {
+    setListItems(prevList => ({
+      ...prevList,
+      isArchived: true
+    }))
   }
 
   useEffect(() => {
@@ -51,8 +64,10 @@ function App() {
   }, [items])
     
   useEffect(() => {
+    console.log({listItems})
     if (!listItems) {
      getList().then(list => {
+      console.log({list})
       setListItems(list.listItems)
       setListId(list.listId)
      })
@@ -64,9 +79,14 @@ function App() {
       <Header items={items || {}} handleUpdateList={handleUpdateList} view={view} toggleView={toggleView} />
       { view === "Admin"
         ? <AdminPanel sections={sections} setItems={setItems} numItems={Object.entries(items).length} />
-        : <List listItems={listItems || {}} sections={sections} />
+        : <List listItems={listItems || {}} sections={sections} handleOpenModal={handleOpenModal} />
       }
-      <BottomAppBar total={total}/>
+      <CustomModal
+        open={openModal}
+        handleClose={handleCloseModal}
+        setListItems={setListItems}
+      />
+      <BottomAppBar total={total} archiveList={archiveList}/>
     </>
   )
 }

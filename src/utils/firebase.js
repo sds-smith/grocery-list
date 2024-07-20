@@ -6,6 +6,7 @@ import {
     collection,
     writeBatch,
     query,
+    where,
     getDocs,
 } from 'firebase/firestore'
 
@@ -93,7 +94,7 @@ export const getItems = async () => {
 
 export const getList = async () => {
   const collectionRef = collection(db, 'lists')
-  const q = query(collectionRef)
+  const q = query(collectionRef, where('isArchived', '!=', true))
 
   const querySnapshot = await getDocs(q)
 
@@ -101,6 +102,7 @@ export const getList = async () => {
     const doc = docSnapshot.data()
     const listId = doc.id;
     delete doc.id;
+    if (Object.prototype.hasOwnProperty.call(doc, 'isArchived')) delete doc.isArchived;
     return {
       listId,
       listItems: doc
