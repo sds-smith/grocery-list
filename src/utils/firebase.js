@@ -8,16 +8,9 @@ import {
     query,
     where,
     getDocs,
-} from 'firebase/firestore'
+} from 'firebase/firestore';
 
-const firebaseConfig = {
-  apiKey: "AIzaSyCNB_LBLSIVidmySagkyR-KZy4nQTZE9ww",
-  authDomain: "grocery-list-6d5b9.firebaseapp.com",
-  projectId: "grocery-list-6d5b9",
-  storageBucket: "grocery-list-6d5b9.appspot.com",
-  messagingSenderId: "103899743396",
-  appId: "1:103899743396:web:b973d4e7014e583e599231"
-};
+import firebaseConfig from '../lib/firebaseConfig';
 
 initializeApp(firebaseConfig);
 
