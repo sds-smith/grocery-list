@@ -87,7 +87,7 @@ export const getItems = async () => {
 
 export const getList = async () => {
   const collectionRef = collection(db, 'lists')
-  const q = query(collectionRef, /*where('isArchived', '!=', true)*/)
+  const q = query(collectionRef, where('isArchived', '!=', true))
 
   const querySnapshot = await getDocs(q)
 console.log('[getList] querySnapshot.docs.data()',querySnapshot.docs.map(docSnapshot=>docSnapshot.data()))
