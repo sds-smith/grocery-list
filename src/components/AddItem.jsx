@@ -8,9 +8,8 @@ import MenuItem from '@mui/material/MenuItem';
 import IconButton from '@mui/material/IconButton';
 import { blue } from '@mui/material/colors';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
-import items from '../data/items';
 
-export default function AddItem({setListItems}) {
+export default function AddItem({items, handleUpdateList}) {
     const [ selected, setSelected ] = useState(null);
     const [ quantity, setQuantity ] = useState(1);
 
@@ -26,24 +25,17 @@ export default function AddItem({setListItems}) {
     }
 
     const handleChangeQty = (e) => {
-        console.log(e.target.value)
         setQuantity(e.target.value);
     }
 
     const handleClickAddItem = () => {
-        setListItems(prevListItems => ({
-            ...prevListItems,
-            [selected] : {
-                ...items[selected],
-                quantity
-            }
-        }))
+        handleUpdateList(selected, quantity)
     }
 
     return (
-        <Grid container alignItems="center" sx={{backgroundColor: blue[100], padding: '10px 0px'}} rowSpacing={3} columnSpacing={2}>
+        <Grid container alignItems="center" sx={{backgroundColor: blue[100], border: '1px solid #1976d2', padding: '10px 0px'}} rowSpacing={3} columnSpacing={2}>
             <Grid item xs={12} >
-                <Typography>Add an Item</Typography>
+                <Typography>{`Add an Item to This Week's Grocery List`}</Typography>
             </Grid>
             <Grid item xs={8} >
                 <Autocomplete

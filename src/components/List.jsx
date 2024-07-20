@@ -1,9 +1,9 @@
 
 import Container from '@mui/material/Container';
 import Section from './Section';
-import sections from '../data/sections';
 
-export default function List({listItems}) {
+export default function List({listItems, sections}) {
+    console.log({listItems, sections})
     const listItemsBySection = Object.entries(listItems)?.reduce((acc, [itemId, itemObj]) => ({
         ...acc,
         [itemObj.section] : {
@@ -11,7 +11,7 @@ export default function List({listItems}) {
             [itemId] : itemObj
         }
     }) || {}, {})
-
+console.log({listItemsBySection})
     const sortHelper = (a, b) => {
         const [a_id] = a;
         const [b_id] = b;
