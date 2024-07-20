@@ -20,7 +20,7 @@ function App() {
   const [listId, setListId] = useState(null);
   const [openModal, setOpenModal] = useState(false);
 
-  const total = !listItems ? 0 : Object.values(listItems).reduce((acc, curr) => acc + (curr?.quantity * curr?.price), 0);
+  const total = !listItems ? 0 : Object.values(listItems).reduce((acc, curr) => acc + (Number(curr?.quantity) * Number(curr?.price)), 0);
 
   const toggleView = () => setView(prevView => TOGGLE_VIEW[prevView]);
 
