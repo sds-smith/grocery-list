@@ -33,7 +33,8 @@ export const addItem = async ( objectToAdd, numItems ) => {
 }
 
 export const updateList = async ( updatedList, listKey = today ) => {
-  console.log({listKey})
+  if (!Object.prototype.hasOwnProperty.call(doc, 'isArchived')) updatedList.isArchived = false;
+  
   const collectionRef = collection(db, 'lists')
   const batch = writeBatch(db)
 
@@ -90,7 +91,7 @@ export const getList = async () => {
   const q = query(collectionRef, where('isArchived', '!=', true))
 
   const querySnapshot = await getDocs(q)
-console.log('[getList] querySnapshot.docs.data()',querySnapshot.docs.map(docSnapshot=>docSnapshot.data()))
+
   return querySnapshot.docs.reduce((_acc, docSnapshot) => {
     const doc = docSnapshot.data()
     const listId = doc.id;
