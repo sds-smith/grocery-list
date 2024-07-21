@@ -21,7 +21,7 @@ export default function List({listItems, sections, handleOpenModal}) {
     }
 
     return (
-        <Container sx={{marginBottom: '50px'}}>
+        <Container sx={{marginBottom: '80px'}}>
             {Object.entries(listItemsBySection).sort((a, b) => sortHelper(a, b)).map(([id, listItems]) => (
                 <Section 
                     key={id}
