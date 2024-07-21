@@ -32,7 +32,9 @@ export const addItem = async ( objectToAdd, numItems ) => {
 }
 
 export const updateList = async ( updatedList, listKey = today ) => {
-  if (!Object.prototype.hasOwnProperty.call(updatedList, 'isArchived')) updatedList.isArchived = false;
+  console.log({updatedList})
+  // if (!Object.prototype.hasOwnProperty.call(updatedList, 'isArchived')) updatedList.isArchived = false;
+  if (updatedList.isArchived === undefined) updatedList.isArchived = false;
 
   const collectionRef = collection(db, 'lists')
   const batch = writeBatch(db)
@@ -87,16 +89,17 @@ export const getList = async () => {
   const collectionRef = collection(db, 'lists')
   const q = query(collectionRef, where('isArchived', '!=', true))
 
-  const querySnapshot = await getDocs(q)
+  const querySnapshot = await getDocs(q);
+  const doc = querySnapshot.docs[0].data();
 
-  return querySnapshot.docs.reduce((_acc, docSnapshot) => {
-    const doc = docSnapshot.data()
-    const listId = doc.id;
-    delete doc.id;
-    if (Object.prototype.hasOwnProperty.call(doc, 'isArchived')) delete doc.isArchived;
-    return {
-      listId,
-      listItems: doc
-    };
-  },{}) || {}
+  const listId = doc.id;
+  const listItems = Object.assign({}, doc);
+
+  delete listItems.id;
+  delete listItems.isArchived;
+
+  return {
+    listId,
+    listItems
+  };
 }

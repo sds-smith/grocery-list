@@ -25,7 +25,7 @@ export default function EditListItem({listItem, setListItem}) {
 
 
     return (
-        <Grid container rowSpacing={3}>
+        <>
             <Grid item xs={12}>
                 <TextField fullWidth label='name' value={listItem?.name} disabled/>
             </Grid>
@@ -62,6 +62,6 @@ export default function EditListItem({listItem, setListItem}) {
                     onChange={handleChangeNotes}
                 />
             </Grid>
-        </Grid>
+        </>
     )
 }

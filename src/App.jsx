@@ -13,27 +13,31 @@ const TOGGLE_VIEW = {
 }
 
 function App() {
-  const [view, setView] = useState('List')
+  const [view, setView] = useState('List');
+  const [openModal, setOpenModal] = useState(false);
+
   const [sections, setSections] = useState(null);
   const [items, setItems] = useState(null);
   const [listItems, setListItems] = useState(null);
   const [listId, setListId] = useState(null);
-  const [openModal, setOpenModal] = useState(false);
+
+  const [loadingSections, setLoadingSections] = useState(false);
+  const [loadingItems, setLoadingItems] = useState(false);
+  const [loadingListItems, setLoadingListItems] = useState(false);
 
   const total = !listItems ? 0 : Object.values(listItems)
-    .reduce((acc, curr) => {
-      return !curr.quantity || !curr.price ? acc : acc + (curr.quantity * curr.price) 
-    }, 0)
-    .toFixed(2);
+    .reduce((acc, curr) => acc + (curr.quantity * curr.price), 0).toFixed(2);
 
-  const toggleView = () => setView(prevView => TOGGLE_VIEW[prevView]);
+  const toggleView =  () => setView(prevView => TOGGLE_VIEW[prevView]);
 
-  const handleUpdateList = (selected, quantity, notes) => {
+  const handleUpdateList = async (selected, quantity, notes) => {
     const itemToAdd = {
       ...items[selected],
       quantity
     };
     if (notes) itemToAdd.notes = notes;
+
+    await updateList({...listItems, [itemToAdd.id]:itemToAdd}, listId)
 
     setListItems(prevListItems => ({
       ...prevListItems,
@@ -52,29 +56,28 @@ function App() {
   }
 
   useEffect(() => {
-    if (listItems) updateList(listItems, listId)
-  }, [listItems, listId])
-
-  useEffect(() => {
-   if (!sections) {
-    getSections().then(setSections)
+   if (!sections && !loadingSections) {
+    setLoadingSections(true)
+    getSections().then(setSections).finally(setLoadingSections(false))
    }
-  }, [sections])
+  }, [loadingSections, sections])
   
   useEffect(() => {
-   if (!items) {
-    getItems().then(setItems)
+   if (!items && !loadingItems) {
+    setLoadingItems(true)
+    getItems().then(setItems).finally(setLoadingItems(false))
    }
-  }, [items])
+  }, [items, loadingItems])
     
   useEffect(() => {
-    if (!listItems) {
+    if (!listItems && !loadingListItems) {
+      setLoadingListItems(true)
      getList().then(list => {
       setListItems(list.listItems)
       setListId(list.listId)
-     })
+     }).finally(setLoadingListItems(false))
     }
-   }, [listItems])
+   }, [listItems, loadingListItems])
 
   return (
     <>

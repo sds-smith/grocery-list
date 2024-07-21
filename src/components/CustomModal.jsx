@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
+import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import EditListItem from './EditListItem';
 
@@ -52,23 +53,34 @@ export default function CustomModal({open, setListItems, handleClose}) {
       aria-describedby="modal-modal-description"
     >
       <Box sx={style}>
-        <Typography id="modal-modal-title" variant="h6" component="h2">
-          {title}
-        </Typography>
-        { action === 'delete' && (
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            {subTitle}
-          </Typography>
-        )}
-        { action === 'edit' && (
-          <EditListItem
-            listItem={listItem}
-            setListItem={setListItem}
-          />
-        )}
-
-        <Button variant='contained' color="secondary" onClick={handleClose}>Cancel</Button>
-        <Button variant='contained' onClick={handleAction}>{action === 'delete' ? 'Delete' : 'Edit'}</Button>
+        <Grid container rowSpacing={3}>
+          <Grid item xs={12}>
+            <Typography id="modal-modal-title" variant="h6" component="h2">
+              {title}
+            </Typography>
+          </Grid>
+          { action === 'delete' && (
+            <Grid item xs={12}>
+              <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                {subTitle}
+              </Typography>
+            </Grid>
+          )}
+          { action === 'edit' && (
+            <EditListItem
+              listItem={listItem}
+              setListItem={setListItem}
+            />
+          )}
+          <Grid container item xs={12} justifyContent='space-evenly'>
+            {/* <Grid item xs={6} > */}
+              <Button variant='contained' color="secondary" onClick={handleClose}>Cancel</Button>
+            {/* </Grid> */}
+            {/* <Grid item xs={6}> */}
+              <Button variant='contained' onClick={handleAction}>{action === 'delete' ? 'Delete' : 'Edit'}</Button>
+            {/* </Grid> */}
+          </Grid>
+        </Grid>
       </Box>
     </Modal>
   )
