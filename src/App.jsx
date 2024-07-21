@@ -21,10 +21,6 @@ function App() {
   const [listItems, setListItems] = useState(null);
   const [listId, setListId] = useState(null);
 
-  const [loadingSections, setLoadingSections] = useState(false);
-  const [loadingItems, setLoadingItems] = useState(false);
-  const [loadingListItems, setLoadingListItems] = useState(false);
-
   const total = !listItems ? 0 : Object.values(listItems)
     .reduce((acc, curr) => acc + (curr.quantity * curr.price), 0).toFixed(2);
 
@@ -56,28 +52,19 @@ function App() {
   }
 
   useEffect(() => {
-   if (!sections && !loadingSections) {
-    setLoadingSections(true)
-    getSections().then(setSections).finally(setLoadingSections(false))
-   }
-  }, [loadingSections, sections])
+   if (!sections) getSections().then(setSections)
+  }, [sections])
   
   useEffect(() => {
-   if (!items && !loadingItems) {
-    setLoadingItems(true)
-    getItems().then(setItems).finally(setLoadingItems(false))
-   }
-  }, [items, loadingItems])
+   if (!items) getItems().then(setItems)
+  }, [items])
     
   useEffect(() => {
-    if (!listItems && !loadingListItems) {
-      setLoadingListItems(true)
-     getList().then(list => {
+    if (!listItems) getList().then(list => {
       setListItems(list.listItems)
       setListId(list.listId)
-     }).finally(setLoadingListItems(false))
-    }
-   }, [listItems, loadingListItems])
+     })
+   }, [listItems])
 
   return (
     <>
