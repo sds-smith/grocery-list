@@ -28,7 +28,6 @@ export const addItem = async ( objectToAdd, numItems ) => {
   batch.set(docRef, {...objectToAdd, id})
 
   await batch.commit()
-  console.log('done')
   return {...objectToAdd, id}
 }
 
@@ -42,7 +41,6 @@ export const updateList = async ( updatedList, listKey = today ) => {
   batch.set(docRef, {...updatedList, id: listKey})
 
   await batch.commit()
-  console.log('done')
 }
 
 export const addCollectionAndDocuments = async ( collectionKey, objectsToAdd ) => {
@@ -54,7 +52,6 @@ export const addCollectionAndDocuments = async ( collectionKey, objectsToAdd ) =
       batch.set(docRef, object)
   })    
   await batch.commit()
-  console.log('done')
 }
 
 export const getSections = async () => {

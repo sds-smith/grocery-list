@@ -43,7 +43,6 @@ export default function CustomModal({open, setListItems, handleClose}) {
   }
 
   useEffect(() => setListItem(payload), [payload])
-  useEffect(() => console.log('[CustomModal] local state',{listItem}), [listItem])
 
   return (      
     <Modal

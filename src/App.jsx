@@ -20,7 +20,11 @@ function App() {
   const [listId, setListId] = useState(null);
   const [openModal, setOpenModal] = useState(false);
 
-  const total = !listItems ? 0 : Object.values(listItems).reduce((acc, curr) => acc + (Number(curr?.quantity) * Number(curr?.price)), 0);
+  const total = !listItems ? 0 : Object.values(listItems)
+    .reduce((acc, curr) => {
+      return !curr.quantity || !curr.price ? acc : acc + (curr.quantity * curr.price) 
+    }, 0)
+    .toFixed(2);
 
   const toggleView = () => setView(prevView => TOGGLE_VIEW[prevView]);
 
@@ -64,10 +68,8 @@ function App() {
   }, [items])
     
   useEffect(() => {
-    console.log({listItems})
     if (!listItems) {
      getList().then(list => {
-      console.log({list})
       setListItems(list.listItems)
       setListId(list.listId)
      })
@@ -86,7 +88,7 @@ function App() {
         handleClose={handleCloseModal}
         setListItems={setListItems}
       />
-      <BottomAppBar total={total} archiveList={archiveList}/>
+      <BottomAppBar total={total} archiveList={archiveList} view={view}/>
     </>
   )
 }
