@@ -5,12 +5,17 @@ import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import Collapse from '@mui/material/Collapse';
+import { useLocalStorage } from '../hooks/useLocalStorage';
 
 export default function ListItem({listItem, handleOpenModal}) {
   const { name, price, quantity, notes } = listItem;
   const [showNotes, setShowNotes] = useState(false);
 
+  const [ checked, setChecked ] = useLocalStorage(`${listItem.id}_checked`)
+
   const toggleNotes = () => {if (notes) setShowNotes(prevShowNotes => !prevShowNotes);}
+
+  const handleCheck = (e) => setChecked(e.target.checked)
 
   const handleEdit = () => {
     handleOpenModal('edit', listItem)
@@ -24,7 +29,7 @@ export default function ListItem({listItem, handleOpenModal}) {
     <>
       <Grid container alignItems="center" >
         <Grid item xs={1} >
-          <Checkbox size='small' />
+          <Checkbox size='small' checked={checked} onChange={handleCheck} />
         </Grid>
         <Grid item xs={4}>
           <span style={{width: '30%', margin: '0px 10px'}} onClick={toggleNotes}>{`${notes ? '**' : ''}${name}`}</span>
