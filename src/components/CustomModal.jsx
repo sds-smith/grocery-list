@@ -18,7 +18,7 @@ const style = {
     p: 4,
   };
 
-export default function CustomModal({open, setListItems, handleClose}) {
+export default function CustomModal({open, handleUpdateList, handleClose}) {
   const { action, payload } = open ? open : { action: null, payload: null };
   const [listItem, setListItem] = useState(payload);
 
@@ -26,21 +26,9 @@ export default function CustomModal({open, setListItems, handleClose}) {
   const subTitle = `This action is irreversible`;
 
   const handleAction = () => {
-    if (action === 'delete') {
-      setListItems(prevListItems => {
-        const newListItems = { ...prevListItems };
-        delete newListItems[payload.id];
-        return newListItems;
-      })
-      handleClose();
-    }
-    if (action === 'edit') {
-      setListItems(prevListItems => ({
-        ...prevListItems,
-        [listItem.id]: listItem
-      }))
-      handleClose();
-    }
+    if (action === 'delete')  handleUpdateList(payload.id, 0);
+    if (action === 'edit')    handleUpdateList(payload.id, listItem.quantity, listItem.notes)
+    handleClose();
   }
 
   useEffect(() => setListItem(payload), [payload])

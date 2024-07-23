@@ -27,24 +27,40 @@ function App() {
   const toggleView =  () => setView(prevView => TOGGLE_VIEW[prevView]);
 
   const handleUpdateList = async (selected, quantity, notes) => {
-    const itemToAdd = {
-      ...items[selected],
-      quantity
-    };
-    if (notes) itemToAdd.notes = notes;
+    if (quantity === 0) {
+      const newListItems = { ...listItems };
+      delete newListItems[selected];
 
-    await updateList({...listItems, [itemToAdd.id]:itemToAdd}, listId)
+      await updateList(newListItems, listId);
 
-    setListItems(prevListItems => ({
-      ...prevListItems,
-      [selected] : itemToAdd
-    }));
+      setListItems(prevListItems => {
+        const newListItems = { ...prevListItems };
+        delete newListItems[selected];
+        return newListItems;
+      })
+    } else {
+      const newOrUpdatedItem = {
+        ...items[selected],
+        quantity
+      };
+      if (notes) {
+        newOrUpdatedItem.notes = notes 
+      } 
+      await updateList({...listItems, [newOrUpdatedItem.id]:newOrUpdatedItem}, listId)
+  
+      setListItems(prevListItems => ({
+        ...prevListItems,
+        [selected] : newOrUpdatedItem
+      }));
+    }
   }
 
   const handleOpenModal = (action, payload) => setOpenModal({action, payload});
   const handleCloseModal = () => setOpenModal(false);
 
-  const archiveList = () => {
+  const archiveList = async () => {
+    await updateList({ ...listItems, isArchived: true }, listId)
+
     setListItems(prevList => ({
       ...prevList,
       isArchived: true
@@ -76,7 +92,7 @@ function App() {
       <CustomModal
         open={openModal}
         handleClose={handleCloseModal}
-        setListItems={setListItems}
+        handleUpdateList={handleUpdateList}
       />
       <BottomAppBar total={total} archiveList={archiveList} view={view}/>
     </>

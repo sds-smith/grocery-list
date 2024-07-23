@@ -32,8 +32,6 @@ export const addItem = async ( objectToAdd, numItems ) => {
 }
 
 export const updateList = async ( updatedList, listKey = today ) => {
-  console.log({updatedList})
-  // if (!Object.prototype.hasOwnProperty.call(updatedList, 'isArchived')) updatedList.isArchived = false;
   if (updatedList.isArchived === undefined) updatedList.isArchived = false;
 
   const collectionRef = collection(db, 'lists')
